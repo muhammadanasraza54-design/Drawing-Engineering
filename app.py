@@ -9,10 +9,10 @@ st.title("📂 TCF Digital Library Search Portal")
 def get_data(search_query):
     # Har line function ke andar 4 spaces aage honi chahiye
     db = mysql.connector.connect(
-        host="mysql-15fcdecc-muhammadanasraza54-5182.g.aivencloud.com",
+        host="mysql-15fcdecc-muhammadanasraza54-5182.g.aivencloud.com", 
         port=11756,
         user="avnadmin",
-        password="AVNS_aRLK6thMKERAＮG1GB5w",
+        password="AVNS_aRLK6thMKERANG1GB5w", 
         database="defaultdb"
     )
     cursor = db.cursor(dictionary=True)
