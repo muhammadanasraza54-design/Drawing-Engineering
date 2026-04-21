@@ -1,13 +1,14 @@
 import streamlit as st
 import mysql.connector
-import os
 
 # Page Configuration
 st.set_page_config(page_title="TCF Drawing Library", layout="wide")
 st.title("📂 TCF Digital Library Search Portal")
 
 # Database Connection
-db = mysql.connector.connect(
+def get_data(search_query):
+    # Har line function ke andar 4 spaces aage honi chahiye
+    db = mysql.connector.connect(
         host="mysql-15fcdecc-muhammadanasraza54-5182.g.aivencloud.com",
         port=11756,
         user="avnadmin",
@@ -15,8 +16,6 @@ db = mysql.connector.connect(
         database="defaultdb"
     )
     cursor = db.cursor(dictionary=True)
-    
-    # Search Query
     query = "SELECT * FROM drawings WHERE campus_name LIKE %s OR file_name LIKE %s LIMIT 100"
     cursor.execute(query, (f"%{search_query}%", f"%{search_query}%"))
     results = cursor.fetchall()
@@ -33,9 +32,9 @@ if search:
             with st.expander(f"📍 {row['campus_name']} - {row['file_name']}"):
                 st.write(f"**Region:** {row['region']}")
                 st.write(f"**Path:** {row['file_path']}")
-                
-                # File kholne ka button (Windows local path ke liye)
-                if st.button(f"Open Drawing", key=row['id']):
-                    os.startfile(row['file_path'])
+                if row.get('file_link'):
+                    st.link_button("🔗 Open Drawing (OneDrive)", row['file_link'])
+                else:
+                    st.info("Is drawing ka link maujood nahi hai.")
     else:
         st.warning("Koi drawing nahi mili.")
